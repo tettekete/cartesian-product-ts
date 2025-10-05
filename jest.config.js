@@ -23,5 +23,7 @@ transform: {
 	],
 },
 // お好み。明示しておくと拡張子解決の揺れを減らせます
-moduleFileExtensions: ['ts', 'tsx', 'mjs', 'js', 'cjs', 'json', 'node']
+moduleFileExtensions: ['ts', 'tsx', 'mjs', 'js', 'cjs', 'json', 'node'],
+// example ディレクトリ配下は実行サンプルなのでテスト対象から除外
+testPathIgnorePatterns: ['/node_modules/', '/example/']
 };

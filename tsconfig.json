@@ -43,7 +43,8 @@
   },
   "exclude": [
     "./tests",
-    "dist"
+    "dist",
+    "example"
   ],
   "ts-node": {
     "esm": true
