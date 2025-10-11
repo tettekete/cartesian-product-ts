@@ -5,12 +5,12 @@ function isNumberArray( arr: any ): arr is number[]
 }
 
 /**
- * 与えられたリストのリストについて、それらの総組み合わせを生成するジェネレータです。
+ * 与えられたリスト群のデカルト積を生成するジェネレータ。
  * リストの数、および各リストの要素数に制約はありません。
- * @param arrayList - 各配列の要素数のリスト
+ * @param arrayList - 各リストそのもの
  * @param order - 組み合わせの列挙順序。省略時はデフォルトの順序（0,1,2,...）
  */
-export function *roundRobin( arrayList: any[][],order?: number[] ): Generator<any[], void, unknown>
+export function *cartesianProduct( arrayList: any[][], order?: number[] ): Generator<any[], void, unknown>
 {
 	if( ! order )
 	{
@@ -24,21 +24,21 @@ export function *roundRobin( arrayList: any[][],order?: number[] ): Generator<an
 
 	if( order.length !== arrayList.length )
 	{
-		throw new Error( 'order array length should match array list length.' );
+		throw new Error( 'Invalid order array' );
 	}
 
-	const sizeList: number[]		= arrayList.map( a => a.length );
-	const orderedSizeList: number[]	= order.map( i => sizeList[i] );
+	const sizeList = arrayList.map( a => a.length );
+	const orderedSizeList = order.map( i => sizeList[i] ) as number[];
 	
-	for( const idxCombination of roundRobinWithSizeList( orderedSizeList ) )
+	for( const idxCombination of cartesianProductWithSizeList( orderedSizeList ) )
 	{
-		const resultCombination = Array.from( { length: sizeList.length }, () => 0 );
-		
-		idxCombination.map( ( no , index ) =>
+		const resultCombination: any[] = new Array(arrayList.length);
+
+		idxCombination.forEach( ( no, index ) =>
 		{
-			const originalIndex = order[index];
+			const originalIndex = order[index]!;
 			resultCombination[originalIndex] = arrayList[originalIndex][no];
-		})
+		});
 
 		yield resultCombination;
 	}
@@ -65,7 +65,7 @@ export function *roundRobin( arrayList: any[][],order?: number[] ): Generator<an
  * @param sizeList - 総当たりする各配列の要素数のリスト
  * @returns 各配列のインデックスの組み合わせを生成するジェネレータ
  */
-export function *roundRobinWithSizeList( sizeList: number[] ): Generator<number[], void, unknown>
+export function *cartesianProductWithSizeList( sizeList: number[] ): Generator<number[], void, unknown>
 {
 	const totalCombinationNum = sizeList.reduce( ( acc, cur )=>
 	{

@@ -1,4 +1,4 @@
-import {roundRobin} from '../src/lib/RoundRobin';
+import {cartesianProduct} from '../src/lib/cartesianProduct';
 
 const arrayList = [
 	['x', 'y'],
@@ -6,7 +6,7 @@ const arrayList = [
 	[ 'U', 'V' , 'W' ]
 ];
 
-for( const combination of roundRobin( arrayList , [2,1,0] ) )
+for( const combination of cartesianProduct( arrayList , [2,1,0] ) )
 {
 	console.log( combination );
 }

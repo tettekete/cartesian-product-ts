@@ -1,7 +1,7 @@
 import {describe, expect, test} from '@jest/globals';
-import {roundRobin} from '../src/lib/RoundRobin';
+import {cartesianProduct} from '../src/lib/cartesianProduct';
 
-describe('roundRobin', () =>
+describe('cartesianProduct', () =>
 {
 	// デフォルト順序で元配列の要素組み合わせが列挙されることを確認
 	test('enumerates value combinations using the default order', () =>
@@ -11,7 +11,7 @@ describe('roundRobin', () =>
 			['C', 'D', 'E'],
 		];
 
-		const combinations = Array.from(roundRobin(arrayList));
+	const combinations = Array.from(cartesianProduct(arrayList));
 
 		// 生成された組み合わせが期待どおりの値と順序で並ぶことを確認
 		expect(combinations).toEqual([
@@ -32,7 +32,7 @@ describe('roundRobin', () =>
 			['C', 'D', 'E'],
 		];
 
-		const combinations = Array.from(roundRobin(arrayList, [1, 0]));
+	const combinations = Array.from(cartesianProduct(arrayList, [1, 0]));
 
 		// 列挙の進み方はカスタム順序に合わせつつ、出力の並びは元配列順になることを確認
 		expect(combinations).toEqual([
@@ -54,7 +54,7 @@ describe('roundRobin', () =>
 			['X', 'Y', 'Z'],
 		];
 
-		const combinations = Array.from(roundRobin(arrayList));
+	const combinations = Array.from(cartesianProduct(arrayList));
 
 		// 組み合わせ総数が要素数の積 (2 * 2 * 3) と一致することを確認
 		expect(combinations).toHaveLength(12);
@@ -86,6 +86,6 @@ describe('roundRobin', () =>
 		];
 
 		// 不正な order を渡した場合に例外が発生することを確認
-		expect(() => Array.from(roundRobin(arrayList, [0]))).toThrow('Invalid order array');
+	expect(() => Array.from(cartesianProduct(arrayList, [0]))).toThrow('Invalid order array');
 	});
 });

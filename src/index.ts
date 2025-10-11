@@ -1,8 +1,7 @@
 
-import { roundRobin } from "./lib/RoundRobin.js";
-export default roundRobin;
+import { cartesianProduct } from "./lib/cartesianProduct.js";
+export default cartesianProduct;
 
 export {
-	roundRobin
-} from "./lib/RoundRobin.js";
-
+	cartesianProduct
+} from "./lib/cartesianProduct.js";
