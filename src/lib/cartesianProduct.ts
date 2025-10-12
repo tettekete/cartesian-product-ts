@@ -1,5 +1,5 @@
 
-function isNumberArray( arr: any ): arr is number[]
+function isNumberArray( arr: unknown[] ): arr is number[]
 {
 	return Array.isArray( arr ) && arr.every( e => typeof e === 'number' );
 }
@@ -10,7 +10,7 @@ function isNumberArray( arr: any ): arr is number[]
  * @param arrayList - 各リストそのもの
  * @param order - 組み合わせの列挙順序。省略時はデフォルトの順序（0,1,2,...）
  */
-export function *cartesianProduct( arrayList: any[][], order?: number[] ): Generator<any[], void, unknown>
+export function *cartesianProduct<T>( arrayList: T[][], order?: number[] ): Generator<T[], void, unknown>
 {
 	if( ! order )
 	{
@@ -32,7 +32,7 @@ export function *cartesianProduct( arrayList: any[][], order?: number[] ): Gener
 	
 	for( const idxCombination of cartesianProductWithSizeList( orderedSizeList ) )
 	{
-		const resultCombination: any[] = new Array(arrayList.length);
+		const resultCombination: T[] = new Array(arrayList.length);
 
 		idxCombination.forEach( ( no, index ) =>
 		{
@@ -72,7 +72,6 @@ export function *cartesianProductWithSizeList( sizeList: number[] ): Generator<n
 		return acc * cur;
 	},1);
 
-	const result: number[][] = [];
 	for( let i = 0; i < totalCombinationNum; i++ )
 	{
 		const thisCombination: number[] = [];
