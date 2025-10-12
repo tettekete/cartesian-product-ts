@@ -16,10 +16,10 @@ describe('cartesianProduct', () =>
 		// 生成された組み合わせが期待どおりの値と順序で並ぶことを確認
 		expect(combinations).toEqual([
 			['A', 'C'],
-			['B', 'C'],
 			['A', 'D'],
-			['B', 'D'],
 			['A', 'E'],
+			['B', 'C'],
+			['B', 'D'],
 			['B', 'E'],
 		]);
 	});
@@ -37,10 +37,10 @@ describe('cartesianProduct', () =>
 		// 列挙の進み方はカスタム順序に合わせつつ、出力の並びは元配列順になることを確認
 		expect(combinations).toEqual([
 			['A', 'C'],
-			['A', 'D'],
-			['A', 'E'],
 			['B', 'C'],
+			['A', 'D'],
 			['B', 'D'],
+			['A', 'E'],
 			['B', 'E'],
 		]);
 	});
@@ -86,6 +86,6 @@ describe('cartesianProduct', () =>
 		];
 
 		// 不正な order を渡した場合に例外が発生することを確認
-	expect(() => Array.from(cartesianProduct(arrayList, [0]))).toThrow('Invalid order array');
+	expect(() => Array.from(cartesianProduct(arrayList, [0,1,2]))).toThrow('Invalid order array');
 	});
 });

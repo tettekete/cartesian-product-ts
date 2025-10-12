@@ -1,88 +1,78 @@
 
-function isNumberArray( arr: any ): arr is number[]
+function _normalizeOrderArray( order: number[], length: number ): number[]
 {
-	return Array.isArray( arr ) && arr.every( e => typeof e === 'number' );
+	const orderSet = new Set(order);
+	if( length > orderSet.size )
+	{
+		order.forEach( (_,i) =>
+			{
+				orderSet.add(i);
+			}
+		);
+	}
+	else if( length !== order.length )
+	{
+		throw new Error( 'Invalid order array' );
+	}
+
+	return Array.from(orderSet);
 }
 
-/**
- * 与えられたリスト群のデカルト積を生成するジェネレータ。
- * リストの数、および各リストの要素数に制約はありません。
- * @param arrayList - 各リストそのもの
- * @param order - 組み合わせの列挙順序。省略時はデフォルトの順序（0,1,2,...）
- */
-export function *cartesianProduct( arrayList: any[][], order?: number[] ): Generator<any[], void, unknown>
+export function reorderArray<T>( arr: T[], order: number[] ): T[]
+{	
+	const result: T[] = new Array( arr.length );
+
+	order.forEach( ( fromIdx ,destIdx ) =>
+	{
+		result[destIdx] = arr[fromIdx]!;
+	});
+
+	return result;
+}
+
+export function restoreOrderArray<T>( arr: T[], order: number[] ): T[]
+{
+	const result: T[] = new Array( arr.length );
+
+	order.forEach( ( destIdx ,fromIdx ) =>
+	{
+		result[destIdx] = arr[fromIdx]!;
+	});
+
+	return result;
+}
+
+export function *cartesianProduct( arrayList: unknown[][], order?: number[] ): Generator<unknown[], void, unknown>
 {
 	if( ! order )
 	{
 		order = Array.from( { length: arrayList.length }, (_,i) => i );
 	}
 
-	if( ! isNumberArray(order) )
-	{
-		throw new Error( 'Invalid order array' );
-	}
+	const normalizedOrder = _normalizeOrderArray( order, arrayList.length );
 
-	if( order.length !== arrayList.length )
-	{
-		throw new Error( 'Invalid order array' );
-	}
+	// normalizedOrder.reverse();
 
-	const sizeList = arrayList.map( a => a.length );
-	const orderedSizeList = order.map( i => sizeList[i] ) as number[];
-	
-	for( const idxCombination of cartesianProductWithSizeList( orderedSizeList ) )
-	{
-		const resultCombination: any[] = new Array(arrayList.length);
+	const reorderedArrayList = reorderArray( arrayList, normalizedOrder );
 
-		idxCombination.forEach( ( no, index ) =>
+	function *buildOneCombination( combinationBuf: unknown[], depth: number ): Generator<unknown[], void, unknown>
+	{
+		const currList = reorderedArrayList[ depth ];
+		for( let i = 0; i < currList.length; i++ )
 		{
-			const originalIndex = order[index]!;
-			resultCombination[originalIndex] = arrayList[originalIndex][no];
-		});
-
-		yield resultCombination;
-	}
-}
-
-/**
- * 組み合わせの総当たりを各配列の要素数のリストから生成するジェネレータ。
- * 返り値は各配列のインデックスの組み合わせとなる。
- * 例えば、3つの配列の要素数がそれぞれ2,3,4の場合、返り値は以下のようになる。
- * ```
- * [0,0,0]
- * [1,0,0]
- * [0,1,0]
- * [1,1,0]
- * [0,2,0]
- * [1,2,0]
- * [0,0,1]
- * [1,0,1]
- * ...
- * [1,2,3]
- * ```
- * ロジックとしては混合基数（桁毎に異なる基数（進数））の数を0から総組み合わせ数-1までカウントアップし、
- * 各桁の値を各配列のインデックスとして利用するイメージ。
- * @param sizeList - 総当たりする各配列の要素数のリスト
- * @returns 各配列のインデックスの組み合わせを生成するジェネレータ
- */
-export function *cartesianProductWithSizeList( sizeList: number[] ): Generator<number[], void, unknown>
-{
-	const totalCombinationNum = sizeList.reduce( ( acc, cur )=>
-	{
-		return acc * cur;
-	},1);
-
-	const result: number[][] = [];
-	for( let i = 0; i < totalCombinationNum; i++ )
-	{
-		const thisCombination: number[] = [];
-		let remaining = i;
-		for( const size of sizeList )
-		{
-			thisCombination.push( remaining % size );
-			remaining = Math.floor( remaining / size );
+			const copyBuf = Array.from( combinationBuf );
+			copyBuf.push( currList[i] );
+			if( depth === reorderedArrayList.length - 1 )
+			{
+				const restored = restoreOrderArray( copyBuf, normalizedOrder );
+				yield restored;
+			}
+			else
+			{
+				yield *buildOneCombination( copyBuf, depth + 1 );
+			}
 		}
-		
-		yield thisCombination;
 	}
+
+	yield *buildOneCombination( [], 0 );
 }
