@@ -1,0 +1,40 @@
+{
+    // IntelliSense を使用して利用可能な属性を学べます。
+    // 既存の属性の説明をホバーして表示します。
+    // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "TSデバッグ",
+            "preLaunchTask": "TSC Compile",// ←タスク名と一致するようにする
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "cwd": "${workspaceFolder}",
+            //"program": "${workspaceFolder}/src/index.ts",
+            "program": "${file}",
+            "console": "internalConsole"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug Jest（現在のテストファイル）",
+            "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
+            "args": [
+                "--runInBand",
+                "--config",
+                "${workspaceFolder}/jest.config.js",
+                "--runTestsByPath",
+                "${relativeFile}"
+            ],
+            "env": {
+                "NODE_OPTIONS": "--experimental-vm-modules"
+            },
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "disableOptimisticBPs": true
+        }
+    ]
+}
