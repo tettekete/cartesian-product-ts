@@ -1,0 +1,40 @@
+---
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Redirecting…</title>
+  <link rel="alternate" hreflang="en" href="{{ site.url }}{{ site.baseurl }}/en/">
+  <link rel="alternate" hreflang="ja" href="{{ site.url }}{{ site.baseurl }}/ja/">
+  <link rel="alternate" hreflang="x-default" href="{{ site.url }}{{ site.baseurl }}/">
+
+  <script>
+    (function() {
+      const langs = navigator.languages && navigator.languages.length
+                    ? navigator.languages            // 標準的な優先リスト
+                    : [navigator.language];          // 後方互換（古いブラウザ用）
+
+      const siteUrl = "{{ site.baseurl }}";
+      let target = siteUrl + "/en/";  // default
+
+      for (const lang of langs) {
+        if (lang.toLowerCase().startsWith("ja")) {
+          target = siteUrl + "/ja/";
+          break;
+        } else if (lang.toLowerCase().startsWith("en")) {
+          target = siteUrl + "/en/";
+          break;
+        }
+      }
+
+      window.location.replace(target);
+    })();
+  </script>
+</head>
+<body>
+  <p>Redirecting… If not redirected, <a href="/en/">click here</a>.</p>
+  <p>ページが自動的に遷移しない場合は <a href="/ja/">こちら</a>。</p>
+</body>
+</html>
