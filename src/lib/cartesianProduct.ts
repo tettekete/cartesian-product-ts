@@ -1,52 +1,52 @@
 
 /**
- * `cartesianProduct` の戻り値を正しく推論させるための補助型。
+ * Helper type that enables TypeScript to infer the return type of `cartesianProduct`.
  *
- * 元の入力配列 `T` が `[string[], number[]]` のようなタプルであるとき、
- * 対応する要素型だけを取り出して `[string, number]` というタプルを返す。
+ * When the original input tuple `T` is something like `[string[], number[]]`,
+ * it extracts just the element types and returns the tuple `[string, number]`.
  *
- * 受け取った配列がタプルリストのケースとそうでないケースで返り値の型が異なる。
+ * The return type changes depending on whether the received array is a tuple list or a regular array list.
  *
- * 例えば、以下のような通常の配列リスト≠タプルリスト:
+ * For example, the following is a regular array list (not a tuple list):
  *
  * const arrayList = [
  * 	['x', 'y'],
  * 	[1,2,3],
  * 	[ 'U', 'V' , 'W' ]
  * ];
- * 
- * の場合、返り値は `['x',2,'W']` の様になり、型としては `(string | number)[]` となる。
  *
- * 次に、以下の様なタプルリスト:
- * 
+ * In this case, the return value looks like `['x',2,'W']`, and the type is `(string | number)[]`.
+ *
+ * Next, consider the following tuple list:
+ *
  * const arrayList = [
  * 	['x', 'y'] as const,
  * 	[1,2,3] as const,
  * 	[ 'U', 'V' , 'W' ] as const
  * ] as const;
- * 
- * の場合、返り値は `['x' | 'y', 1 | 2 | 3, 'U' | 'V' | 'W'][]` となる。
  *
- * さらに、`as const` を付けずに以下のように型注釈でタプルリストを指定した場合:
+ * Here, the return type becomes `['x' | 'y', 1 | 2 | 3, 'U' | 'V' | 'W'][]`.
+ *
+ * Additionally, if you skip `as const` and instead specify a tuple-list type annotation:
  * const arrayList: [string[], number[], ('U' | 'V' | 'W')[]] = [
  * 	['x', 'y'],
  * 	[1,2,3],
  * 	[ 'U', 'V' , 'W' ]
  * ];
- * 
- * の場合、返り値は `(string | number | 'U' | 'V' | 'W')[][]` となる。
- * これは、各配列が可変長であるため、各要素の型がそれぞれ `string[]`, `number[]`, `('U' | 'V' | 'W')[]` として扱われ、
- * それらの要素型を合成した `(string | number | 'U' | 'V' | 'W')` が各要素の型として推論されるため。
  *
- * まとめると、`as const` を使ったタプルのリストは、各配列の要素をリテラルユニオン型とした型
- * （例: `['x' | 'y', 1 | 2 | 3, 'U' | 'V' | 'W'][]` ）が得られる。
- * 型注釈でタプルリストを指定した場合は、各配列が可変長として扱われ、要素型が合成されたより一般的な型
- * （例: `(string | number | 'U' | 'V' | 'W')[][]` ）が得られる
- * 何も指定しない場合は、各配列が通常の配列として扱われ、要素型が合成された型
- * （例:`(string | number)[]`）が得られる。
+ * The return type becomes `(string | number | 'U' | 'V' | 'W')[][]`.
+ * Each array is treated as variable-length, so their element types remain `string[]`, `number[]`, and `('U' | 'V' | 'W')[]`,
+ * and combining them results in `(string | number | 'U' | 'V' | 'W')` for each element.
  *
- * @template T - 元の入力配列の型
- * @returns 各配列の要素型を取り出したタプル型
+ * In short, using `as const` for a list of tuples yields a type where each array contributes a literal union
+ * (for example: `['x' | 'y', 1 | 2 | 3, 'U' | 'V' | 'W'][]`).
+ * When you rely on a tuple-list type annotation, each array is considered variable-length and their element types merge
+ * (for example: `(string | number | 'U' | 'V' | 'W')[][]`).
+ * When nothing is specified, each array is treated as a normal array and the merged element type is used
+ * (for example: `(string | number)[]`).
+ *
+ * @template T - Type of the original input array
+ * @returns A tuple composed of the element types of each array
  */
 type ElementTypes<T extends ReadonlyArray<ReadonlyArray<unknown>>> =
 {
@@ -72,10 +72,10 @@ function isNumberArray( arr: unknown ): arr is ReadonlyArray<number>
 }
 
 /**
- * 与えられたリスト群のデカルト積を生成するジェネレータ。
- * リストの数、および各リストの要素数に制約はありません。
- * @param arrayList - 各リストそのもの
- * @param order - 組み合わせの列挙順序。省略時はデフォルトの順序（0,1,2,...）
+ * Generator that produces the cartesian product of the provided lists.
+ * There is no restriction on the number of lists or the length of each list.
+ * @param arrayList - The lists themselves
+ * @param order - Enumeration order of the combinations; defaults to the natural order (0,1,2,...)
  */
 export function *cartesianProduct<T extends ReadonlyArray<ReadonlyArray<unknown>>>( arrayList: T, order?: ReadonlyArray<number> ): Generator<ElementTypes<T>, void, unknown>
 {
@@ -112,9 +112,9 @@ export function *cartesianProduct<T extends ReadonlyArray<ReadonlyArray<unknown>
 }
 
 /**
- * 組み合わせの総当たりを各配列の要素数のリストから生成するジェネレータ。
- * 返り値は各配列のインデックスの組み合わせとなる。
- * 例えば、3つの配列の要素数がそれぞれ2,3,4の場合、返り値は以下のようになる。
+ * Generator that enumerates all combinations from a list of element counts.
+ * Each yielded value is a combination of indices for every array.
+ * For example, when three arrays have 2, 3, and 4 elements respectively, the yielded values are:
  * ```
  * [0,0,0]
  * [1,0,0]
@@ -127,10 +127,10 @@ export function *cartesianProduct<T extends ReadonlyArray<ReadonlyArray<unknown>
  * ...
  * [1,2,3]
  * ```
- * ロジックとしては混合基数（桁毎に異なる基数（進数））の数を0から総組み合わせ数-1までカウントアップし、
- * 各桁の値を各配列のインデックスとして利用するイメージ。
- * @param sizeList - 総当たりする各配列の要素数のリスト
- * @returns 各配列のインデックスの組み合わせを生成するジェネレータ
+ * Conceptually, it counts from 0 up to total combinations - 1 in mixed radix (each digit has its own base)
+ * and uses each digit as the index for the corresponding array.
+ * @param sizeList - List of element counts for the arrays to iterate exhaustively
+ * @returns Generator that yields index combinations for each array
  */
 export function *cartesianProductWithSizeList( sizeList: ReadonlyArray<number> ): Generator<number[], void, unknown>
 {
