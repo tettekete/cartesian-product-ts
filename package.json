@@ -1,6 +1,6 @@
 {
   "name": "@tettekete/cartesian-product",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "main": "dist/index.js",
   "scripts": {
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --runInBand",
@@ -8,7 +8,8 @@
     "build:types": "tsc --project tsconfig.build.json",
     "build": "npm run build:clean && npm run build:types && node esbuild.config.mjs",
     "dev": "npm run build; node dist/index.js",
-    "prepack": "npm run build",
+    "prepack": "npm run build && rm README.md && cp ./docs/en/README.md README.md",
+    "postpack": "git checkout README.md",
     "lint": "eslint"
   },
   "module": "./dist/index.js",
@@ -25,10 +26,21 @@
       "default": "./dist/index.js"
     }
   },
-  "keywords": [],
+  "keywords": [
+    "cartesian product",
+    "combinatorics",
+    "iterator",
+    "generator",
+    "typescript",
+    "order"
+  ],
   "author": "tettekete",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tettekete/cartesian-product-ts"
+  },
   "license": "MIT",
-  "description": "",
+  "description": "Compute the cartesian product of multiple arrays with a customizable iteration order.",
   "devDependencies": {
     "@eslint/js": "^9.37.0",
     "@stylistic/eslint-plugin": "^5.4.0",
