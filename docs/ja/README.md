@@ -21,6 +21,13 @@ const arrayList = [
 		['C', 'D', 'E'],
 	];
 
+// 一般的なイテレーター取り出し
+for( const combination of cartesianProduct( arrayList ) )
+{
+	console.log( combination );
+}
+
+// デフォルトオーダーのサンプル
 console.log( Array.from(cartesianProduct( arrayList )) );
 // ->
 // [
@@ -32,6 +39,7 @@ console.log( Array.from(cartesianProduct( arrayList )) );
 // 	['B', 'E'],
 // ]
 
+// リバースオーダーのサンプル
 console.log( Array.from( cartesianProduct( arrayList , [1,0] ) ) );
 // ->
 // [

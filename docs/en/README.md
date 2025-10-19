@@ -20,6 +20,15 @@ const arrayList = [
 		['C', 'D', 'E'],
 	];
 
+
+// Common usage
+for( const combination of cartesianProduct( arrayList ) )
+{
+	console.log( combination );
+}
+
+
+// Default order sample
 console.log( Array.from(cartesianProduct( arrayList )) ); // default order is [0,1,2,...]
 // ->
 // [
@@ -31,6 +40,8 @@ console.log( Array.from(cartesianProduct( arrayList )) ); // default order is [0
 // 	['B', 'E'],
 // ]
 
+
+// Reverse order sample
 console.log( Array.from( cartesianProduct( arrayList , [1,0] ) ) );
 // ->
 // [
