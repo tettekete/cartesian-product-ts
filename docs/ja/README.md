@@ -1,0 +1,45 @@
+# @tettekete/cartesian-product
+
+## 概要
+
+所謂デカルト積を返すモジュールです。
+
+### 特徴
+
+- ジェネレーター関数なので大量の組み合わせになるケースでもメモリを圧迫しない
+- 組み合わせの計算順を指定出来る
+- ESM,CJS,ブラウザサポート
+
+
+## SYNOPSIS
+
+```ts
+import { cartesianProduct } from '@tettekete/cartesian-product';
+
+const arrayList = [
+		['A', 'B'],
+		['C', 'D', 'E'],
+	];
+
+console.log( Array.from(cartesianProduct( arrayList )) );
+// ->
+// [
+// 	['A', 'C'],
+// 	['B', 'C'],
+// 	['A', 'D'],
+// 	['B', 'D'],
+// 	['A', 'E'],
+// 	['B', 'E'],
+// ]
+
+console.log( Array.from( cartesianProduct( arrayList , [1,0] ) ) );
+// ->
+// [
+// 	['A', 'C'],
+// 	['A', 'D'],
+// 	['A', 'E'],
+// 	['B', 'C'],
+// 	['B', 'D'],
+// 	['B', 'E'],
+// ]
+```
