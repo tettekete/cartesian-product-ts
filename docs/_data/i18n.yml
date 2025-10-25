@@ -1,0 +1,11 @@
+ja:
+  read_in: "Language"
+  english: "English"
+  japanese: "日本語"
+  view_on_github: "GitHub で見る"
+en:
+  read_in: "Language"
+  english: "English"
+  japanese: "日本語"
+  view_on_github: "View on GitHub"
+  

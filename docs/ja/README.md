@@ -1,3 +1,10 @@
+---
+# layout: default
+# title: Home
+lang: ja
+permalink: /ja/
+---
+
 # @tettekete/cartesian-product
 
 ## 概要

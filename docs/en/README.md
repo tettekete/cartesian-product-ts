@@ -1,3 +1,8 @@
+---
+lang: en
+permalink: /en/
+---
+
 # @tettekete/cartesian-product
 
 ## Overview

@@ -1,0 +1,21 @@
+<div style="display: flex;justify-content: flex-end">
+<nav id="lang-switch-nav">
+  <span>{{ site.data.i18n[page.lang].read_in }}:</span>
+  {% if page.lang != 'en' %}
+    <a href="{{ '/en/' | relative_url }}">{{ site.data.i18n[page.lang].english | 'English' }}</a>
+  {% else %}
+    <span style="font-weight: bold;">{{ site.data.i18n[page.lang].english | 'English' }}</span>
+  {% endif %}
+  |
+  {% if page.lang != 'ja' %}
+    <a href="{{ '/ja/' | relative_url }}">{{ site.data.i18n[page.lang].japanese | '日本語' }}</a>
+  {% else %}
+    <span style="font-weight: bold;">{{ site.data.i18n[page.lang].japanese | '日本語' }}</span>
+  {% endif %}
+</nav>
+{% if site.github.is_project_page %}
+<nav class="common-nav">
+  <a href="{{ site.github.repository_url }}">{{ site.data.i18n[page.lang].view_on_github}}</a>
+</nav>
+{% endif %}
+</div>

@@ -1,0 +1,40 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+.page-header {
+  padding: 20px 10px;
+}
+
+a.btn {
+  padding: 4pt;
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+#lang-switch-nav ,.common-nav
+{
+  display: block;
+	background-color: rgba(0, 0, 0, 0.08);
+	text-align-last: right;
+	padding: 2pt 1rem 2pt 1rem;
+	border: 1px solid #DDD;
+  font-size: 0.8rem;
+}
+
+/* デフォルト：見出しの前は大きめ余白 */
+h2 ,h3 {
+  margin-top: 2rem;
+}
+
+h4{
+  margin-top: 1.5rem;
+}
+
+/* ただし見出しが続く場合は小さめ余白 */
+h1 + h2,
+h2 + h3,
+h3 + h4 {
+  margin-top: 0.25rem;
+}
