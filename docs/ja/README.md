@@ -40,6 +40,7 @@ console.log( Array.from(cartesianProduct( arrayList )) );
 // ]
 
 // リバースオーダーのサンプル
+// `[1,0]` の 1 や 0 は `arrayList` のインデックス値で、組み合わせを回す優先順を表します。
 console.log( Array.from( cartesianProduct( arrayList , [1,0] ) ) );
 // ->
 // [

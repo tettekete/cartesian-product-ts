@@ -42,6 +42,7 @@ console.log( Array.from(cartesianProduct( arrayList )) ); // default order is [0
 
 
 // Reverse order sample
+// `[1,0]` = index rotation priority for arrayList
 console.log( Array.from( cartesianProduct( arrayList , [1,0] ) ) );
 // ->
 // [
