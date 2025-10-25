@@ -39,6 +39,7 @@
     "type": "git",
     "url": "https://github.com/tettekete/cartesian-product-ts"
   },
+  "homepage": "https://tettekete.github.io/cartesian-product-ts/",
   "license": "MIT",
   "description": "Compute the cartesian product of multiple arrays with a customizable iteration order.",
   "devDependencies": {
